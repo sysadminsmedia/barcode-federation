@@ -16,7 +16,7 @@
                 "PeerPending"
             ]
         },
-        "nodeSource": {
+        "sourceNode": {
             "type": "string",
             "format": "iri"
         },

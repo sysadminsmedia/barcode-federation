@@ -32,7 +32,7 @@
         "peersEndpoint": {
             "type": "string",
             "format": "iri",
-            "description": "Optional peers endpoint URI path",
+            "description": "Optional peers endpoint URI (absolute IRI)",
             "examples": [
                 "https://barcodes.example.com/sbfp/peers",
                 "https://example.net/sbfp-peers"
