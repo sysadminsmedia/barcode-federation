@@ -1,6 +1,7 @@
 {
     "$id": "/schema/discovery.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
     "title": "Discovery Schema",
     "description": "Response body for .well-known/sbfp discovery requests",
     "properties": {

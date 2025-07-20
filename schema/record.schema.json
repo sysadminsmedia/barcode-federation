@@ -1,6 +1,7 @@
 {
     "$id": "/schema/record.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
     "title": "Record Type",
     "description": "This is the record type that will get embedded within the announcement",
     "properties": {
@@ -23,7 +24,7 @@
                 "Code-39 Full ASCII",
                 "Code-93",
                 "Flattermarken",
-                "GSI-128 (UCC/EAN-128)",
+                "GS1-128 (UCC/EAN-128)",
                 "MSI",
                 "GS1 DataBar",
                 "GS1 DataBar Stacked",

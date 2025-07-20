@@ -1,6 +1,7 @@
 {
     "$id": "/schema/peers.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
     "title": "Peers Endpoint Response",
     "description": "This is the response format that the peers list endpoint should respond with",
     "properties": {
