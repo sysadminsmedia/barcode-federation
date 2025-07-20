@@ -1,8 +1,8 @@
 {
-    "$id": "/schema/discovery",
+    "$id": "/schema/discovery.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "Announcement Payload",
-    "description": "The payload that the node will send for .well-known/sbfp GET requests",
+    "title": "Discovery Schema",
+    "description": "Response body for .well-known/sbfp discovery requests",
     "properties": {
         "nodeUrl": {
             "type": "string",

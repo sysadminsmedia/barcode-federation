@@ -1,13 +1,16 @@
 {
-    "$id": "/schema/peers",
+    "$id": "/schema/peers.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Peers Endpoint Response",
     "description": "This is the response format that the peers list endpoint should respond with",
     "properties": {
         "peers": {
             "type": "array",
-            "format": "iri",
-            "description": "Array of peers using the root URI of the peers",
+            "items": {
+                "type": "string",
+                "format": "iri"
+            },
+            "description": "Array of peer root IRIs",
             "$comment": "IRI is used to support UTF-8 domains"
         }
     },
