@@ -1,0 +1,42 @@
+{
+    "$id": "/schema/record",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Record Type",
+    "description": "This is the record type that will get embeded within the announcement",
+    "properties": {
+        "id": {
+            "type": "string",
+            "pattern": "^[a-z]+$",
+            "description": "Lowercase representation of the barcode information",
+            "examples": [
+                "abc1204",
+                "12390124"
+            ]
+        },
+        "barcodeType": {
+            "type": "string",
+            "enum": [
+                "UPC-A",
+                "UPC-E"
+            ],
+            "description": "The type of barcode limited to the enum type"
+        },
+        "metadataSchema": {
+            "type": "string",
+            "format": "uri",
+            "description": "The schema that the metadata is going to match"
+        },
+        "metadata": {
+            "type": "object",
+            "description": "The barcode metadata, object defined by the metadataSchema prooperty",
+            "$comment": "Add a anyOf property with the various $ref objects to the types once the RFCs for those have been created"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "id",
+        "barcodeType",
+        "metadataSchema",
+        "metadata"
+    ]
+}
