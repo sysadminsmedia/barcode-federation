@@ -1,0 +1,91 @@
+{
+    "$id": "/schema/record.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "Record Type",
+    "description": "This is the record type that will get embedded within the announcement",
+    "properties": {
+        "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+$",
+            "description": "Lowercase representation of the barcode information",
+            "examples": [
+                "abc1204",
+                "12390124"
+            ]
+        },
+        "barcodeType": {
+            "type": "string",
+            "enum": [
+                "Code-128",
+                "Code-11",
+                "Code-2of5 Interleaved",
+                "Code-39",
+                "Code-39 Full ASCII",
+                "Code-93",
+                "Flattermarken",
+                "GS1-128 (UCC/EAN-128)",
+                "MSI",
+                "GS1 DataBar",
+                "GS1 DataBar Stacked",
+                "GS1 DataBar Stacked Omnidirectional",
+                "GS1 DataBar Limited",
+                "GS1 DataBar Expanded",
+                "GS1 DataBar Expanded Stacked",
+                "GS1-128 Composite",
+                "GS1-DataBar Composite",
+                "GS1-DataBar Stacked Composite",
+                "GS1-DataBar Stacked Omnidirectional Composite",
+                "GS1-DataBar Limited Composite",
+                "GS1-DataBar Expanded Composite",
+                "GS1-DataBar Expanded Stacked Composite",
+                "EAN-8",
+                "EAN-13",
+                "EAN-14",
+                "EAN-8 Composite",
+                "EAN-13 Composite",
+                "UPC-A",
+                "UPC-E",
+                "UPC-A Composite",
+                "UPC-E Composite",
+                "QR Code",
+                "Data Matrix",
+                "Aztec Code",
+                "Codablock-F",
+                "Maxicode",
+                "MicroPDF417",
+                "PDF417",
+                "Micro QR Code",
+                "Han Xin",
+                "DotCode",
+                "GS1 QR Code",
+                "GS1 DataMatrix",
+                "GS1 Digital Link QR Code",
+                "GS1 Digital Link DataMatrix",
+                "ISBN-13",
+                "ISBN-13+5",
+                "ISMN",
+                "ISSN",
+                "ISSN+2"
+            ],
+            "description": "The type of barcode limited to the enum type"
+        },
+        "metadataSchema": {
+            "type": "string",
+            "format": "iri",
+            "description": "The schema that the metadata is going to match"
+        },
+        "metadata": {
+            "type": "object",
+            "description": "The barcode metadata, object defined by the metadataSchema prooperty",
+            "$comment": "Add a anyOf property with the various $ref objects to the types once the RFCs for those have been created"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "id",
+        "barcodeType",
+        "metadataSchema",
+        "metadata"
+    ]
+}

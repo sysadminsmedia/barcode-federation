@@ -1,0 +1,36 @@
+{
+    "$id": "/schema/announcement.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "Announcement Payload",
+    "description": "Payload sent to other nodes",
+    "properties": {
+        "action": {
+            "type": "string",
+            "enum": [
+                "Create",
+                "Update",
+                "PeerRequest",
+                "PeerApprove",
+                "PeerReject",
+                "PeerPending"
+            ]
+        },
+        "sourceNode": {
+            "type": "string",
+            "format": "iri"
+        },
+        "message": {
+            "type": "string"
+        },
+        "record": {
+            "type": "object",
+            "$ref": "/schema/record.schema.json"
+        }
+    },
+    "required": [
+        "action",
+        "nodeSource"
+    ],
+    "additionalProperties": false
+}

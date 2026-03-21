@@ -1,0 +1,49 @@
+{
+    "$id": "/schema/discovery.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "Discovery Schema",
+    "description": "Response body for .well-known/sbfp discovery requests",
+    "properties": {
+        "nodeUrl": {
+            "type": "string",
+            "format": "iri",
+            "description": "The root Node URL",
+            "examples": [
+                "https://barcodes.example.com",
+                "https://example.net"
+            ],
+            "$comment": "We use IRI here for formatting to accept UTF-8 URLs"
+        },
+        "nodeName": {
+            "type": "string",
+            "description": "A human readable string for the node"
+        },
+        "announcementEndpoint": {
+            "type": "string",
+            "format": "iri",
+            "description": "The full URI to the announcement endpoint",
+            "examples": [
+                "https://barcodes.example.com/sbfp/inbox",
+                "https://example.net/sbfp-inbox"
+            ],
+            "$comment": "We use IRI here for formatting to accept UTF-8 URLs"
+        },
+        "peersEndpoint": {
+            "type": "string",
+            "format": "iri",
+            "description": "Optional peers endpoint URI (absolute IRI)",
+            "examples": [
+                "https://barcodes.example.com/sbfp/peers",
+                "https://example.net/sbfp-peers"
+            ],
+            "$comment": "We use IRI here for formatting to accept UTF-8 URLs"
+        }
+    },
+    "required": [
+        "nodeUrl",
+        "nodeName",
+        "announcementEndpoint"
+    ],
+    "additionalProperties": false
+}
