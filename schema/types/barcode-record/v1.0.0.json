@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/barcode-record/v1.0.0.json",
+  "title": "FBS Barcode Record v1.0.0",
+  "description": "The primary data unit in FBS representing a barcode and its associated product metadata. Defined in RFC FBS0001 Section 4.2.1.",
+  "type": "object",
+  "required": ["fbs", "type", "id", "cbi", "symbology", "value", "status", "submittedBy", "submittedAt", "updatedAt", "originNode", "metadataSchema", "metadata", "revisionHistory", "signature"],
+  "$defs": {
+    "NamespaceClaim": {
+      "type": "object",
+      "description": "Reference to an applicable Namespace Claim as defined in RFC Section 4.2.1.6.",
+      "required": ["claimId", "claimedBy", "claimSignature"],
+      "properties": {
+        "claimId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Globally unique URI identifying this namespace claim"
+        },
+        "claimedBy": {
+          "type": "string",
+          "pattern": "^fbs://",
+          "description": "Actor Identifier (AID) of the entity that holds this claim"
+        },
+        "claimSignature": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "Base64url-encoded signature proving ownership of the claim"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GS1CrossRef": {
+      "type": "object",
+      "description": "GS1 cross-reference for self-sovereign records as defined in RFC Section 4.2.5.6.",
+      "required": ["cbi", "crossRefSignature"],
+      "properties": {
+        "cbi": {
+          "type": "string",
+          "description": "Canonical Barcode Identifier being cross-referenced in GS1"
+        },
+        "crossRefSignature": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "Base64url-encoded signature validating the cross-reference"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CustodyEntry": {
+      "type": "object",
+      "description": "A single entry in the append-only custody transfer log.",
+      "required": ["from", "to", "at", "condition"],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "Actor Identifier (AID) of the entity transferring custody"
+        },
+        "to": {
+          "type": "string",
+          "description": "Actor Identifier (AID) of the entity receiving custody"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "UTC timestamp when the custody transfer occurred"
+        },
+        "condition": {
+          "type": "string",
+          "enum": ["accepted", "damaged", "partial", "rejected"],
+          "description": "Condition of the item at the time of transfer"
+        },
+        "fromSignature": {
+          "type": "string",
+          "description": "Base64url-encoded signature from the transferring party"
+        },
+        "toSignature": {
+          "type": ["string", "null"],
+          "description": "Base64url-encoded signature from the receiving party, or null if not yet accepted"
+        },
+        "delegateExpiry": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Expiry timestamp for delegated custody authority"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RelatedRecord": {
+      "type": "object",
+      "description": "A typed link to another Barcode Record.",
+      "required": ["cbi", "relationship"],
+      "properties": {
+        "cbi": {
+          "type": "string",
+          "description": "Canonical Barcode Identifier of the related record"
+        },
+        "recordId": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI of the related Barcode Record"
+        },
+        "relationship": {
+          "type": "string",
+          "enum": ["contains", "contained-in", "replaces", "replaced-by", "fulfills", "return-of", "returned-by", "recall-of", "derived-from", "cross-reference"],
+          "description": "Type of relationship to the related record"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of units of the related item"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the relationship"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RevisionHistoryEntry": {
+      "type": "object",
+      "description": "A single entry in the append-only revision log as defined in RFC Section 4.2.1.5.",
+      "required": ["revisionId", "at", "by", "changeType", "previousRevisionSignature"],
+      "properties": {
+        "revisionId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID v4 uniquely identifying this revision"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "UTC timestamp when this revision was made"
+        },
+        "by": {
+          "type": "string",
+          "description": "Actor Identifier (AID) of the entity that made this revision"
+        },
+        "changeType": {
+          "type": "string",
+          "enum": ["create", "update", "retract"],
+          "description": "The type of change represented by this revision"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Optional human-readable summary of the change"
+        },
+        "previousRevisionSignature": {
+          "type": ["string", "null"],
+          "description": "Signature of the previous revision entry, or null for the first entry"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "fbs": {"type": "string", "enum": ["1.0"], "description": "Protocol version"},
+    "type": {"type": "string", "enum": ["BarcodeRecord"], "description": "Object type discriminator"},
+    "id": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Globally unique HTTPS URL for this record"},
+    "cbi": {"type": "string", "description": "Canonical Barcode Identifier of form {symbology}:{value}"},
+    "symbology": {"type": "string", "enum": ["upc-a", "upc-e", "ean-13", "ean-8", "code-39", "code-128", "itf-14", "gs1-128", "qr-code", "data-matrix", "pdf-417", "aztec", "gs1-databar"]},
+    "value": {"type": "string", "minLength": 1, "description": "Raw barcode value, full length, zero-padded, check digit inclusive"},
+    "status": {"type": "string", "enum": ["active", "retracted", "expired"], "description": "Lifecycle status"},
+    "submittedBy": {"type": "string", "description": "Actor Identifier who originally submitted this record"},
+    "submittedAt": {"type": "string", "format": "date-time", "description": "UTC timestamp of initial creation"},
+    "updatedAt": {"type": "string", "format": "date-time", "description": "UTC timestamp of most recent revision"},
+    "expiresAt": {"type": "string", "format": "date-time", "description": "Optional expiry timestamp"},
+    "originNode": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Node that first created this record"},
+    "namespaceClaim": {"$ref": "#/$defs/NamespaceClaim"},
+    "metadataSchema": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS URL of JSON Schema for metadata"},
+    "metadataSchemaDigest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$", "description": "SHA-256 digest of metadataSchema content"},
+    "lifecycleSchema": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS URL of the JSON Schema governing lifecycle updates for this record, as defined in RFC Section 4.1.2.1. Required when the record contains lifecycle updates."},
+    "metadata": {"type": "object", "description": "Product metadata validated against metadataSchema and FBS Core Schema"},
+    "gs1CrossRef": {"$ref": "#/$defs/GS1CrossRef"},
+    "custodyChain": {"type": "array", "items": {"$ref": "#/$defs/CustodyEntry"}, "description": "Append-only log of custody transfers"},
+    "currentCustodian": {"type": "string", "description": "Actor ID of the current custodian"},
+    "relatedRecords": {"type": "array", "items": {"$ref": "#/$defs/RelatedRecord"}, "description": "Typed links to other Barcode Records"},
+    "revisionHistory": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/RevisionHistoryEntry"}, "description": "Append-only log of all revisions"},
+    "signature": {"type": "string", "description": "Base64url-encoded Ed25519 signature"}
+  },
+  "additionalProperties": true
+}

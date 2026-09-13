@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/electronics/v1.0.0.json",
+  "title": "FBS Consumer Electronics Metadata Schema v1.0.0",
+  "description": "Domain-specific metadata schema for consumer electronics products. Incorporates the FBS Core Metadata Schema via allOf to ensure all core interoperability fields are present. Defined in RFC FBS0001 Section 4.2.4.4.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["name", "languages", "manufacturer", "modelNumber"],
+  "properties": {
+    "manufacturer": {
+      "type": "string",
+      "description": "Product manufacturer."
+    },
+    "modelNumber": {
+      "type": "string",
+      "description": "Manufacturer model number or identifier."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "smartphone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "monitor",
+        "television",
+        "audio",
+        "camera",
+        "wearable",
+        "gaming",
+        "networking",
+        "storage",
+        "peripheral",
+        "appliance",
+        "other"
+      ],
+      "description": "Product category classification."
+    },
+    "releaseDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Release date in ISO 8601 format (YYYY-MM-DD)."
+    },
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "number",
+          "description": "Length in millimeters."
+        },
+        "width": {
+          "type": "number",
+          "description": "Width in millimeters."
+        },
+        "height": {
+          "type": "number",
+          "description": "Height in millimeters."
+        },
+        "weight": {
+          "type": "number",
+          "description": "Weight in grams."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Physical dimensions and weight of the product."
+    },
+    "color": {
+      "type": "string",
+      "description": "Product color or finish."
+    },
+    "connectivity": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Connectivity options (e.g. 'WiFi 6E', 'Bluetooth 5.3', 'USB-C', 'HDMI 2.1')."
+    },
+    "powerSupply": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["battery", "ac-adapter", "usb-powered", "solar", "other"],
+          "description": "Power supply type."
+        },
+        "voltage": {
+          "type": "string",
+          "description": "Operating voltage (e.g. '5V', '100-240V')."
+        },
+        "wattage": {
+          "type": "string",
+          "description": "Power consumption (e.g. '65W', '18W')."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Power supply specifications."
+    },
+    "batteryCapacity": {
+      "type": "string",
+      "description": "Battery capacity (e.g. '5000mAh')."
+    },
+    "warranty": {
+      "type": "object",
+      "properties": {
+        "duration": {
+          "type": "string",
+          "description": "Warranty duration (e.g. '24 months')."
+        },
+        "type": {
+          "type": "string",
+          "description": "Warranty type (e.g. 'manufacturer', 'extended')."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Warranty information."
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Regulatory and safety certifications (e.g. 'FCC', 'CE', 'UL', 'Energy Star', 'RoHS')."
+    },
+    "operatingSystem": {
+      "type": "string",
+      "description": "Operating system, if applicable."
+    },
+    "storageCapacity": {
+      "type": "string",
+      "description": "Storage capacity (e.g. '256GB', '1TB')."
+    },
+    "processorInfo": {
+      "type": "string",
+      "description": "CPU or chip description."
+    },
+    "displayInfo": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "type": "string",
+          "description": "Display size (e.g. '6.7 inches')."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Display resolution (e.g. '2560x1440')."
+        },
+        "technology": {
+          "type": "string",
+          "description": "Display technology (e.g. 'OLED', 'IPS LCD')."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Display specifications."
+    },
+    "inBox": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Items included in the box."
+    },
+    "recyclingInfo": {
+      "type": "string",
+      "description": "Disposal and recycling instructions."
+    },
+    "energyRating": {
+      "type": "string",
+      "description": "Energy efficiency rating, if applicable."
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,7 @@
+# Generated at runtime
+fbs-node
+fbs-node.db
+fbs-node.db-wal
+fbs-node.db-shm
+node-key.pem
+config.toml

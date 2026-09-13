@@ -1,0 +1,25 @@
+# FBS Reference Node Configuration
+#
+# Copy this file to config.toml and edit as needed.
+# Initialize with: go run . -init
+
+[node]
+host = "localhost:8080"
+display_name = "My FBS Node"
+operated_by = "Your Name"
+contact = "admin@example.com"
+key_file = "node-key.pem"
+# trust_anchors = ["https://trust.example-anchor.org/.well-known/fbs/meta"]
+# schema_registries = ["https://schemas.fbs-community.example/registry/index.json"]
+
+[database]
+path = "fbs-node.db"
+
+[server]
+addr = ":8080"
+
+[federation]
+policy = "open"     # open, allowlist, or blocklist
+# peers = ["https://peer1.example.com", "https://peer2.example.com"]
+# allowlist = []
+# blocklist = []

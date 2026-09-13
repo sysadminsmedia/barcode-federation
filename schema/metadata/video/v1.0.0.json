@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/video/v1.0.0.json",
+  "title": "FBS Video Media Metadata Schema v1.0.0",
+  "description": "Domain-specific metadata schema for video media including films, series, and physical disc releases. Incorporates the FBS Core Metadata Schema via allOf to ensure all core interoperability fields are present. Defined in RFC FBS0001 Section 4.2.4.4.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["name", "languages", "format"],
+  "properties": {
+    "format": {
+      "type": "string",
+      "enum": ["dvd", "blu-ray", "4k-uhd", "vhs", "digital"],
+      "description": "Physical or digital format of the video media."
+    },
+    "contentType": {
+      "type": "string",
+      "enum": ["film", "series", "documentary", "concert", "educational", "compilation"],
+      "description": "Type of video content."
+    },
+    "directors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Directors of the video content."
+    },
+    "cast": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Principal cast members."
+    },
+    "studio": {
+      "type": "string",
+      "description": "Production studio."
+    },
+    "distributor": {
+      "type": "string",
+      "description": "Distribution label."
+    },
+    "releaseDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Release date in ISO 8601 format (YYYY-MM-DD)."
+    },
+    "genres": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Genre classifications for this video content."
+    },
+    "rating": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "string",
+          "enum": ["MPAA", "BBFC", "FSK", "ACB", "EIRIN", "OTHER"],
+          "description": "Content rating system used."
+        },
+        "value": {
+          "type": "string",
+          "description": "Rating value within the specified system (e.g. 'PG-13', '12A')."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Content rating from a recognized classification body."
+    },
+    "runtime": {
+      "type": "string",
+      "description": "Total runtime as an ISO 8601 duration (e.g. 'PT2H15M')."
+    },
+    "discCount": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of discs in the release."
+    },
+    "region": {
+      "type": "string",
+      "description": "Disc region code (e.g. 'A', 'B', '1', '2', 'ALL')."
+    },
+    "aspectRatio": {
+      "type": "string",
+      "description": "Aspect ratio of the video content (e.g. '16:9', '2.39:1')."
+    },
+    "audioTracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string",
+            "description": "Audio language as a BCP 47 tag."
+          },
+          "format": {
+            "type": "string",
+            "description": "Audio codec or format (e.g. 'Dolby Atmos', 'DTS-HD MA', 'LPCM')."
+          },
+          "channels": {
+            "type": "string",
+            "description": "Channel configuration (e.g. '7.1', '5.1', '2.0')."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Available audio tracks on the release."
+    },
+    "subtitleLanguages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Available subtitle languages as BCP 47 tags."
+    },
+    "specialFeatures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of included bonus content and special features."
+    },
+    "synopsis": {
+      "type": "string",
+      "maxLength": 5000,
+      "description": "Plot or content summary."
+    },
+    "seasonNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Season number, applicable for series box sets."
+    },
+    "episodeCount": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of episodes, applicable for series box sets."
+    }
+  },
+  "additionalProperties": true
+}

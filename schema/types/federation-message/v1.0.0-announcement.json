@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/federation-message/v1.0.0.json",
+  "title": "FBS Federation Message v1.0.0",
+  "description": "HTTP POST message delivered to peer node inboxes to propagate Barcode Records and federation activities. Defined in RFC FBS0001 Section 4.4.2. This schema is also accessible as federation-message.schema.json.",
+  "type": "object",
+  "required": ["fbs", "type", "id", "sender", "recipient", "activity", "publishedAt", "signature"],
+  "properties": {
+    "fbs": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Protocol version. MUST be '1.0'."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["FederationMessage"],
+      "description": "Object type discriminator. MUST be 'FederationMessage'."
+    },
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "Unique HTTPS URL identifier for this federation message."
+    },
+    "sender": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "HTTPS base URL of the sending node."
+    },
+    "recipient": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "HTTPS base URL of the receiving node."
+    },
+    "activity": {
+      "type": "string",
+      "enum": ["Publish", "Retract", "ClaimPublish", "ClaimRetract", "KeySuccessionDeclaration", "KeyRotation", "NodeCompromiseNotice", "TransparencyAlert", "CustodyTransfer", "CustodyAccept", "Ping", "Pong"],
+      "description": "Type of federation activity. Includes key lifecycle (KeySuccessionDeclaration, KeyRotation), security notices (NodeCompromiseNotice, TransparencyAlert), custody operations (CustodyTransfer, CustodyAccept), and connectivity checks (Ping/Pong). See RFC FBS0001 Section 4.4.3 for specifications."
+    },
+    "object": {
+      "description": "Primary payload object. Varies by activity type: Barcode Record for Publish, lightweight reference for Retract, Namespace Claim for ClaimPublish/ClaimRetract, KeySuccessionDeclaration or KeyRotation document, NodeCompromiseNotice or TransparencyAlert notice. May be null for Ping/Pong."
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when the message was created in ISO 8601 format."
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "Base64url-encoded Ed25519 signature of the sending node over the canonical federation message (RFC 9421)."
+    }
+  },
+  "additionalProperties": false
+}

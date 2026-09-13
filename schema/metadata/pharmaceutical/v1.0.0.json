@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/pharmaceutical/v1.0.0.json",
+  "title": "FBS Pharmaceutical Product Metadata Schema v1.0.0",
+  "description": "Domain-specific metadata schema for pharmaceutical products. Incorporates the FBS Core Metadata Schema via allOf to ensure all core interoperability fields are present. Defined in RFC FBS0001 Section 4.2.4.4.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["name", "languages", "activeIngredients", "dosageForm"],
+  "properties": {
+    "activeIngredients": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "strength"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the active ingredient."
+          },
+          "strength": {
+            "type": "string",
+            "description": "Strength of the active ingredient (e.g. '500mg')."
+          },
+          "casNumber": {
+            "type": "string",
+            "description": "CAS Registry Number for the ingredient."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Active pharmaceutical ingredients with their strengths."
+    },
+    "inactiveIngredients": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of inactive (excipient) ingredients."
+    },
+    "dosageForm": {
+      "type": "string",
+      "enum": [
+        "tablet",
+        "capsule",
+        "liquid",
+        "injection",
+        "topical",
+        "inhaler",
+        "patch",
+        "suppository",
+        "drops",
+        "powder",
+        "spray",
+        "other"
+      ],
+      "description": "Pharmaceutical dosage form of the product."
+    },
+    "routeOfAdministration": {
+      "type": "string",
+      "enum": [
+        "oral",
+        "topical",
+        "intravenous",
+        "intramuscular",
+        "subcutaneous",
+        "inhalation",
+        "rectal",
+        "ophthalmic",
+        "otic",
+        "nasal",
+        "sublingual",
+        "transdermal",
+        "other"
+      ],
+      "description": "Route by which the product is administered."
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Pharmaceutical manufacturer."
+    },
+    "ndcNumber": {
+      "type": "string",
+      "description": "US National Drug Code, if applicable."
+    },
+    "atcCode": {
+      "type": "string",
+      "description": "WHO Anatomical Therapeutic Chemical classification code."
+    },
+    "prescriptionRequired": {
+      "type": "boolean",
+      "description": "Whether a prescription is required to dispense this product."
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Safety warnings and contraindications."
+    },
+    "sideEffects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Known side effects."
+    },
+    "storageConditions": {
+      "type": "string",
+      "description": "Storage requirements (e.g. 'Store below 25\u00b0C')."
+    },
+    "shelfLife": {
+      "type": "string",
+      "description": "Expected shelf life (e.g. '36 months')."
+    },
+    "batchNumber": {
+      "type": "string",
+      "description": "Manufacturing batch or lot number."
+    },
+    "expiryDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Expiration date in ISO 8601 format (YYYY-MM-DD)."
+    },
+    "regulatoryApprovals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agency", "approvalNumber"],
+        "properties": {
+          "agency": {
+            "type": "string",
+            "description": "Regulatory agency that granted approval (e.g. 'FDA', 'EMA', 'MHRA')."
+          },
+          "approvalNumber": {
+            "type": "string",
+            "description": "Approval or authorization number."
+          },
+          "approvedDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date approval was granted in ISO 8601 format (YYYY-MM-DD)."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Regulatory approvals held by this product."
+    },
+    "packageSize": {
+      "type": "string",
+      "description": "Package quantity description (e.g. '30 tablets', '100ml bottle')."
+    },
+    "controlledSubstanceSchedule": {
+      "type": "string",
+      "description": "DEA schedule or equivalent classification (e.g. 'Schedule II')."
+    }
+  },
+  "additionalProperties": true
+}

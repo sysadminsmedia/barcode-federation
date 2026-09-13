@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/outbox-page/v1.0.0.json",
+  "title": "FBS Outbox Page v1.0.0",
+  "description": "A paginated page of outbox items from a federation node. RFC FBS0001 Section 4.4.5.",
+  "type": "object",
+  "required": [
+    "fbs",
+    "type",
+    "nodeId",
+    "totalItems",
+    "page",
+    "pageSize",
+    "items"
+  ],
+  "properties": {
+    "fbs": {"type": "string", "enum": ["1.0"], "description": "Protocol version"},
+    "type": {"type": "string", "enum": ["OutboxPage"], "description": "Object type discriminator"},
+    "nodeId": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS URL of the originating node"},
+    "totalItems": {"type": "integer", "minimum": 0, "description": "Total number of items across all pages"},
+    "page": {"type": "integer", "minimum": 1, "description": "Current page number (1-indexed)"},
+    "pageSize": {"type": "integer", "minimum": 1, "description": "Number of items per page"},
+    "nextPage": {"type": "string", "format": "uri", "pattern": "^https://", "description": "URL of the next page, if any"},
+    "previousPage": {"type": "string", "format": "uri", "pattern": "^https://", "description": "URL of the previous page, if any"},
+    "items": {"type": "array", "description": "Outbox items on this page"}
+  },
+  "additionalProperties": false
+}
