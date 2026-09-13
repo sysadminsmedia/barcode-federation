@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/logistics/v1.0.0.json",
+  "title": "FBS Logistics Shipment Metadata Schema v1.0.0",
+  "description": "Domain-specific metadata schema for logistics shipments. Incorporates the FBS Core Metadata Schema via allOf to ensure all core interoperability fields are present.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["name", "languages", "shipmentType", "trackingStatus"],
+  "properties": {
+    "shipmentType": {
+      "type": "string",
+      "enum": ["B2B", "B2C", "C2C", "return", "internal-transfer"],
+      "description": "Classification of the shipment type."
+    },
+    "carrier": {
+      "type": "string",
+      "description": "Name of the carrier responsible for transporting the shipment."
+    },
+    "trackingNumber": {
+      "type": "string",
+      "description": "External tracking number assigned by the carrier, if applicable."
+    },
+    "weight": {
+      "type": "string",
+      "description": "Total weight of the shipment with units. Example: '2.3kg'."
+    },
+    "dimensions": {
+      "type": "string",
+      "description": "Dimensions of the shipment package with units. Example: '30x20x15cm'."
+    },
+    "originFacility": {
+      "type": "string",
+      "description": "Identifier or name of the facility where the shipment originates."
+    },
+    "destinationFacility": {
+      "description": "Identifier or name of the destination facility. May be an encrypted field."
+    },
+    "trackingStatus": {
+      "type": "string",
+      "enum": [
+        "label-created",
+        "picked-up",
+        "in-transit",
+        "at-sort-facility",
+        "out-for-delivery",
+        "delivered",
+        "failed-delivery",
+        "returned",
+        "transferred-to-partner",
+        "held-at-facility",
+        "customs-hold",
+        "cancelled"
+      ],
+      "description": "Current tracking status of the shipment."
+    },
+    "currentLocation": {
+      "type": "string",
+      "description": "Human-readable description of the shipment's current location."
+    },
+    "estimatedDelivery": {
+      "type": "string",
+      "format": "date",
+      "description": "Estimated delivery date in ISO 8601 date format."
+    },
+    "lastScannedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of the most recent scan event in ISO 8601 format."
+    },
+    "handoffPartner": {
+      "type": "string",
+      "description": "Actor ID of the handoff carrier when the shipment is transferred to a partner."
+    },
+    "deliveryAddress": {
+      "description": "Delivery address for the shipment. May be an encrypted field."
+    },
+    "recipientName": {
+      "description": "Name of the recipient. May be an encrypted field."
+    },
+    "recipientPhone": {
+      "description": "Phone number of the recipient. May be an encrypted field."
+    },
+    "deliveryInstructions": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Special instructions for delivery."
+    },
+    "contents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cbi"],
+        "properties": {
+          "cbi": {
+            "type": "string",
+            "description": "Canonical Barcode Identifier of the item."
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of units of this item in the shipment."
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description of the item."
+          }
+        }
+      },
+      "description": "List of items contained in the shipment."
+    },
+    "signatureRequired": {
+      "type": "boolean",
+      "description": "Whether a signature is required upon delivery."
+    },
+    "insuranceValue": {
+      "type": "string",
+      "description": "Declared insurance value with currency. Example: 'USD 150.00'."
+    },
+    "handlingInstructions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Special handling instructions for the shipment. Examples: ['fragile', 'this-side-up', 'keep-dry']."
+    },
+    "temperatureRange": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number",
+          "description": "Minimum acceptable temperature."
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum acceptable temperature."
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["C", "F"],
+          "description": "Temperature unit: Celsius or Fahrenheit."
+        }
+      },
+      "description": "Required temperature range for temperature-sensitive shipments."
+    },
+    "serviceLevel": {
+      "type": "string",
+      "enum": ["express", "priority", "standard", "economy", "freight"],
+      "description": "Service level for the shipment."
+    }
+  },
+  "additionalProperties": true
+}

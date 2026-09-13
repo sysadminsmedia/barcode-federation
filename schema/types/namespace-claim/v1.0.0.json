@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/namespace-claim/v1.0.0.json",
+  "title": "FBS Namespace Claim v1.0.0",
+  "description": "A signed assertion that an actor holding the namespace:claim capability has issuing or controlling authority over a barcode value range or namespace. Defined in RFC FBS0001 Section 4.2.3.",
+  "type": "object",
+  "required": ["fbs", "type", "id", "claimedBy", "namespaceType", "scope", "issuedAt", "evidence", "signature"],
+  "properties": {
+    "fbs": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Protocol version"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["NamespaceClaim"],
+      "description": "Object type discriminator"
+    },
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "Stable HTTPS URL at which this claim can be retrieved"
+    },
+    "claimedBy": {
+      "type": "string",
+      "pattern": "^fbs://[^/]+/[^/]+$",
+      "description": "Actor Identifier of the actor asserting this claim. MUST hold namespace:claim capability."
+    },
+    "namespaceType": {
+      "type": "string",
+      "enum": ["gs1", "self"],
+      "description": "Namespace type: 'gs1' for GS1-track claims, 'self' for self-sovereign namespace claims"
+    },
+    "scope": {
+      "type": "object",
+      "description": "Scope of the claimed authority. Structure depends on namespaceType. For gs1: {symbologies, prefixes}. For self: {fni}"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when this claim was created in ISO 8601 format"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp after which the claim is no longer valid. REQUIRED for gs1 claims, OPTIONAL for self claims."
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Evidence supporting the claim. Structure depends on namespaceType. See RFC FBS0001 Section 4.2.3.3 for details."
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "Base64url-encoded Ed25519 signature over canonical form of claim. For gs1 claims: signed by actor's primary keypair. For self claims: signed by namespace keypair."
+    }
+  },
+  "additionalProperties": false
+}

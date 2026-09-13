@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/lifecycle/shipment-tracking/v1.0.0.json",
+  "title": "FBS Shipment Tracking Lifecycle Schema v1.0.0",
+  "description": "Lifecycle schema defining which fields may be updated via the record:lifecycle capability for shipment tracking records.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["trackingStatus"],
+  "properties": {
+    "trackingStatus": {
+      "type": "string",
+      "enum": [
+        "label-created",
+        "picked-up",
+        "in-transit",
+        "at-sort-facility",
+        "out-for-delivery",
+        "delivered",
+        "failed-delivery",
+        "returned",
+        "transferred-to-partner",
+        "held-at-facility",
+        "customs-hold",
+        "cancelled"
+      ],
+      "description": "Current tracking status of the shipment."
+    },
+    "currentLocation": {
+      "type": "string",
+      "description": "Human-readable description of the shipment's current location."
+    },
+    "lastScannedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of the most recent scan event in ISO 8601 format."
+    },
+    "estimatedDelivery": {
+      "type": "string",
+      "format": "date",
+      "description": "Estimated delivery date in ISO 8601 date format."
+    },
+    "handoffPartner": {
+      "type": "string",
+      "description": "Actor ID of the handoff carrier when the shipment is transferred to a partner."
+    },
+    "deliveryInstructions": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Special instructions for delivery."
+    }
+  },
+  "additionalProperties": true
+}

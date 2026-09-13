@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/key-succession-declaration/v1.0.0.json",
+  "title": "FBS Key Succession Declaration v1.0.0",
+  "description": "Declares succession from an old FNI/key pair to a new one with limited scope. RFC FBS0001 Section 4.2.5.7.2.",
+  "type": "object",
+  "required": [
+    "fbs",
+    "type",
+    "id",
+    "oldFni",
+    "oldPublicKey",
+    "successorFni",
+    "successorPublicKey",
+    "scope",
+    "declaredAt",
+    "expiresAt",
+    "oldKeySignature",
+    "successorKeySignature"
+  ],
+  "properties": {
+    "fbs": {"type": "string", "enum": ["1.0"], "description": "Protocol version"},
+    "type": {"type": "string", "enum": ["KeySuccessionDeclaration"], "description": "Object type discriminator"},
+    "id": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Stable HTTPS URL where this document is permanently accessible"},
+    "oldFni": {"type": "string", "pattern": "^fni1[a-z2-7]{32}$", "description": "FNI of the old (retiring) identity"},
+    "oldPublicKey": {"$ref": "#/$defs/Ed25519PublicKey", "description": "Public key of the old identity"},
+    "successorFni": {"type": "string", "pattern": "^fni1[a-z2-7]{32}$", "description": "FNI of the successor identity"},
+    "successorPublicKey": {"$ref": "#/$defs/Ed25519PublicKey", "description": "Public key of the successor identity"},
+    "scope": {"type": "string", "enum": ["retract-only"], "description": "Scope of authority granted to the successor"},
+    "declaredAt": {"type": "string", "format": "date-time", "description": "Timestamp when the declaration was created"},
+    "expiresAt": {"type": "string", "format": "date-time", "description": "Timestamp when the declaration expires"},
+    "oldKeySignature": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$", "description": "Base64url-encoded signature by the old key"},
+    "successorKeySignature": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$", "description": "Base64url-encoded signature by the successor key"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "Ed25519PublicKey": {
+      "type": "object",
+      "required": ["algorithm", "publicKeyPem"],
+      "properties": {
+        "algorithm": {"type": "string", "enum": ["Ed25519"], "description": "Key algorithm"},
+        "publicKeyPem": {"type": "string", "description": "PEM-encoded public key"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

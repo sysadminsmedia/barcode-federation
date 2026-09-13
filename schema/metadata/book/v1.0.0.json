@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/book/v1.0.0.json",
+  "title": "FBS Book Metadata Schema v1.0.0",
+  "description": "Domain-specific metadata schema for books and printed publications. Incorporates the FBS Core Metadata Schema via allOf to ensure all core interoperability fields are present. Defined in RFC FBS0001 Section 4.2.4.4.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["name", "languages", "authors"],
+  "properties": {
+    "authors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "Ordered list of authors as they appear on the publication."
+    },
+    "isbn10": {
+      "type": "string",
+      "pattern": "^[0-9]{9}[0-9X]$",
+      "description": "ISBN-10 identifier, including check digit."
+    },
+    "isbn13": {
+      "type": "string",
+      "pattern": "^(978|979)[0-9]{10}$",
+      "description": "ISBN-13 identifier, including check digit."
+    },
+    "publisher": {
+      "type": "string",
+      "description": "Publisher name."
+    },
+    "publishedDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Publication date in ISO 8601 format (YYYY-MM-DD)."
+    },
+    "edition": {
+      "type": "string",
+      "description": "Edition identifier (e.g. '3rd', 'Revised')."
+    },
+    "pageCount": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Total number of pages in the publication."
+    },
+    "format": {
+      "type": "string",
+      "enum": ["hardcover", "paperback", "ebook", "audiobook"],
+      "description": "Physical format of the publication."
+    },
+    "genres": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Genre and category classifications for the book."
+    },
+    "series": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the series this book belongs to."
+        },
+        "volume": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "description": "Volume or number within the series."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Series information if the book is part of a series."
+    },
+    "synopsis": {
+      "type": "string",
+      "maxLength": 5000,
+      "description": "Plot or content summary of the book."
+    },
+    "targetAudience": {
+      "type": "string",
+      "enum": ["children", "young-adult", "adult", "academic", "professional"],
+      "description": "Intended target audience for the publication."
+    },
+    "deweyDecimal": {
+      "type": "string",
+      "description": "Dewey Decimal Classification number."
+    },
+    "locClassification": {
+      "type": "string",
+      "description": "Library of Congress Classification."
+    }
+  },
+  "additionalProperties": true
+}

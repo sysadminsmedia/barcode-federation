@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json",
+  "title": "FBS Core Metadata Schema v1.0.0",
+  "description": "Base schema that all FBS metadata schemas MUST incorporate by reference using allOf. Defines minimum fields required for cross-schema interoperability. RFC FBS0001 Section 4.2.4.3.",
+  "type": "object",
+  "required": ["name", "languages"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Human-readable product name, provided in at least one of the languages listed in 'languages'."
+    },
+    "brand": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Brand or trade name under which the product is marketed. Omit if the product is unbranded."
+    },
+    "languages": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z]{2,3}(-[A-Z]{2,3})?$"
+      },
+      "description": "List of BCP 47 language tags for the languages in which this metadata is provided. All language-dependent fields MUST be provided in at least the first listed language."
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url", "role"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://",
+            "description": "HTTPS URL at which the image is accessible"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["primary", "alternate", "detail", "label", "packaging"],
+            "description": "Semantic role of the image. 'primary' is the main product image. 'label' is an image of the product label. 'packaging' is the outer packaging. 'detail' is a close-up. 'alternate' is any other supplementary view."
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "description": "SHA-256 content hash of the image file, formatted as 'sha256:' followed by 64 lowercase hex characters"
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Product images. At most one SHOULD carry role 'primary'."
+    },
+    "countryOfOrigin": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 code for the country in which the product was manufactured or primarily assembled."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 5000,
+      "description": "Free-text product description in the primary language of the record."
+    }
+  },
+  "additionalProperties": true
+}

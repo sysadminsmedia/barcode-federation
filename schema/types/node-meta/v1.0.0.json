@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/node-meta/v1.0.0.json",
+  "title": "FBS Node Metadata v1.0.0",
+  "description": "Metadata document exposed at /.well-known/fbs/meta describing an FBS node. RFC FBS0001 Section 4.3.1.",
+  "type": "object",
+  "required": ["fbs", "type", "nodeId", "displayName", "publicKey", "inbox"],
+  "properties": {
+    "fbs": {"type": "string", "enum": ["1.0"], "description": "Protocol version"},
+    "type": {"type": "string", "enum": ["NodeMeta"], "description": "Object type discriminator"},
+    "nodeId": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS base URL of this node"},
+    "displayName": {"type": "string", "minLength": 1, "maxLength": 200, "description": "Human-readable node name"},
+    "operatedBy": {"type": "string", "description": "Organization operating this node"},
+    "version": {"type": "string", "description": "Software version of this FBS implementation"},
+    "capabilities": {"type": "array", "items": {"type": "string"}, "description": "Feature capabilities this node supports"},
+    "federationPolicy": {"type": "string", "enum": ["open", "allowlist", "blocklist"], "description": "Federation policy stance"},
+    "inbox": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Federation inbox endpoint"},
+    "outbox": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Federation outbox endpoint"},
+    "peers": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Optional peer list endpoint"},
+    "publicKey": {"type": "object", "description": "Public key for HTTP message signatures"},
+    "trustAnchors": {"type": "array", "description": "Trusted verification badge issuers"},
+    "schemaRegistries": {"type": "array", "description": "Recognized schema registries"},
+    "contact": {"type": "string", "description": "Contact email for node operator"},
+    "termsOfService": {"type": "string", "format": "uri", "pattern": "^https://", "description": "TOS or usage policy URL"}
+  },
+  "additionalProperties": false
+}

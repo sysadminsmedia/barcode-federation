@@ -1,0 +1,26 @@
+name: json-yaml-validate
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    json-yaml-validate:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: json-yaml-validate
+              id: json-yaml-validate
+              uses: GrantBirki/json-yaml-validate@v3.3.2
+              with:
+                  mode: "warn"
+                  comment: true
+                  json_schema_version: "draft-2020-12"
+                  json_extension: ".schema.json"
+                  base_dir: ./schema

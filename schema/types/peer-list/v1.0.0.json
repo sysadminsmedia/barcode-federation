@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/peer-list/v1.0.0.json",
+  "title": "FBS Peer List v1.0.0",
+  "description": "Known FBS peers exposed at /.well-known/fbs/peers for node bootstrapping. RFC FBS0001 Section 4.3.4.",
+  "type": "object",
+  "required": ["fbs", "type", "nodeId", "publishedAt", "ttl", "peers"],
+  "properties": {
+    "fbs": {"type": "string", "enum": ["1.0"], "description": "Protocol version"},
+    "type": {"type": "string", "enum": ["PeerList"], "description": "Object type discriminator"},
+    "nodeId": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS base URL of the publishing node"},
+    "publishedAt": {"type": "string", "format": "date-time", "description": "UTC timestamp when list was published"},
+    "ttl": {"type": "integer", "minimum": 3600, "maximum": 86400, "description": "Cache time-to-live in seconds (1-24 hours)"},
+    "peers": {"type": "array", "minItems": 0, "items": {"$ref": "#/$defs/Peer"}, "description": "Array of known FBS peer node objects"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "Peer": {
+      "type": "object",
+      "description": "A single FBS peer node entry.",
+      "required": ["nodeId", "meta", "addedAt", "relationship"],
+      "properties": {
+        "nodeId": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS base URL of the peer node"},
+        "meta": {"type": "string", "format": "uri", "pattern": "^https://", "description": "HTTPS URL to the peer's metadata endpoint"},
+        "addedAt": {"type": "string", "format": "date-time", "description": "UTC timestamp when this peer was added"},
+        "relationship": {"type": "string", "enum": ["federated", "known"], "description": "Relationship type: federated (mutual) or known (one-way awareness)"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

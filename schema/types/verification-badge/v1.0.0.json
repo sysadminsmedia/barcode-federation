@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/types/verification-badge/v1.0.0.json",
+  "title": "FBS Verification Badge v1.0.0",
+  "description": "A signed verification badge asserting a trust level about a subject. RFC FBS0001 Section 4.5.3.",
+  "type": "object",
+  "required": [
+    "fbs",
+    "type",
+    "badgeId",
+    "level",
+    "subject",
+    "subjectKeyFingerprint",
+    "issuedBy",
+    "issuedAt",
+    "expiresAt",
+    "claims",
+    "signature"
+  ],
+  "properties": {
+    "fbs": {"type": "string", "enum": ["1.0"], "description": "Protocol version"},
+    "type": {"type": "string", "enum": ["VerificationBadge"], "description": "Object type discriminator"},
+    "badgeId": {"type": "string", "format": "uri", "pattern": "^https://", "description": "Unique HTTPS URL identifying this badge"},
+    "level": {"type": "integer", "minimum": 0, "maximum": 3, "description": "Verification level (0-3)"},
+    "subject": {"type": "string", "pattern": "^fbs://", "description": "AID of the subject being verified"},
+    "subjectKeyFingerprint": {"type": "string", "pattern": "^sha256:[a-f0-9]+$", "description": "SHA-256 fingerprint of the subject's public key"},
+    "issuedBy": {"type": "string", "pattern": "^fbs://", "description": "AID of the issuing authority"},
+    "issuedAt": {"type": "string", "format": "date-time", "description": "Timestamp when the badge was issued"},
+    "expiresAt": {"type": "string", "format": "date-time", "description": "Timestamp when the badge expires"},
+    "claims": {
+      "type": "object",
+      "required": ["level", "verificationMethod"],
+      "properties": {
+        "level": {"type": "integer", "minimum": 0, "maximum": 3, "description": "Verified trust level"},
+        "verifiedDomain": {"type": "string", "description": "Domain verified for the subject"},
+        "verifiedPrefixes": {"type": "array", "items": {"type": "string"}, "description": "URI prefixes verified for the subject"},
+        "verificationMethod": {"type": "string", "description": "Method used to perform verification"},
+        "quorum": {"$ref": "#/$defs/QuorumDetails", "description": "Quorum details (required for level 3)"}
+      },
+      "additionalProperties": false,
+      "description": "Verification claims"
+    },
+    "transparencyLog": {"$ref": "#/$defs/TransparencyLogRef", "description": "Transparency log entry (required for level 3)"},
+    "signature": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$", "description": "Base64url-encoded signature over the badge"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "QuorumDetails": {
+      "type": "object",
+      "required": ["threshold", "size", "participants", "evidenceSources"],
+      "properties": {
+        "threshold": {"type": "integer", "description": "Minimum number of agreeing participants"},
+        "size": {"type": "integer", "description": "Total number of participants in the quorum"},
+        "participants": {"type": "array", "items": {"type": "string"}, "description": "List of participant identifiers"},
+        "evidenceSources": {"type": "array", "items": {"$ref": "#/$defs/EvidenceSource"}, "description": "Sources of verification evidence"}
+      },
+      "additionalProperties": false
+    },
+    "EvidenceSource": {
+      "type": "object",
+      "required": ["node", "source", "verifiedAt"],
+      "properties": {
+        "node": {"type": "string", "description": "Node that provided evidence"},
+        "source": {"type": "string", "description": "Source of the evidence"},
+        "verifiedAt": {"type": "string", "format": "date-time", "description": "Timestamp when evidence was verified"}
+      },
+      "additionalProperties": false
+    },
+    "TransparencyLogRef": {
+      "type": "object",
+      "required": ["logId", "sct", "mergeDeadline"],
+      "properties": {
+        "logId": {"type": "string", "format": "uri", "description": "URI identifying the transparency log"},
+        "sct": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$", "description": "Base64url-encoded Signed Certificate Timestamp"},
+        "mergeDeadline": {"type": "string", "format": "date-time", "description": "Deadline by which the entry must be merged into the log"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

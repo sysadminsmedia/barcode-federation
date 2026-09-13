@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.fbs-community.example/metadata/apparel/v1.0.0.json",
+  "title": "FBS Apparel Metadata Schema v1.0.0",
+  "description": "Domain-specific metadata schema for apparel and clothing products. Incorporates the FBS Core Metadata Schema via allOf to ensure all core interoperability fields are present. Defined in RFC FBS0001 Section 4.2.4.4.",
+  "allOf": [
+    {
+      "$ref": "https://schemas.fbs-community.example/metadata/core/v1.0.0.json"
+    }
+  ],
+  "required": ["name", "languages", "materials"],
+  "properties": {
+    "materials": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["material", "percentage"],
+        "properties": {
+          "material": {
+            "type": "string",
+            "description": "Material name (e.g. 'Cotton', 'Polyester')."
+          },
+          "percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentage of this material in the composition."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Material composition of the garment."
+    },
+    "garmentType": {
+      "type": "string",
+      "description": "Type of garment (e.g. 't-shirt', 'jacket', 'trousers')."
+    },
+    "size": {
+      "type": "string",
+      "description": "Size designation (e.g. 'M', '42', '10')."
+    },
+    "sizeSystem": {
+      "type": "string",
+      "enum": ["US", "UK", "EU", "JP", "AU", "universal", "other"],
+      "description": "Sizing system used for the size designation."
+    },
+    "color": {
+      "type": "string",
+      "description": "Primary color of the garment."
+    },
+    "pattern": {
+      "type": "string",
+      "description": "Pattern or print (e.g. 'solid', 'striped', 'plaid', 'floral')."
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["mens", "womens", "unisex", "boys", "girls", "infant"],
+      "description": "Target gender for the garment."
+    },
+    "careInstructions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Laundering and care instructions."
+    },
+    "season": {
+      "type": "string",
+      "enum": ["spring", "summer", "autumn", "winter", "all-season"],
+      "description": "Intended season for the garment."
+    },
+    "madeIn": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "Manufacturing country as an ISO 3166-1 alpha-2 code."
+    },
+    "sustainabilityCertifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "issuer"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the sustainability certification."
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Organization that issued the certification."
+          },
+          "certificationUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL for verification of the certification."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Sustainability and ethical certifications held by this product."
+    },
+    "fitType": {
+      "type": "string",
+      "description": "Fit type (e.g. 'slim', 'regular', 'relaxed', 'oversized')."
+    }
+  },
+  "additionalProperties": true
+}
